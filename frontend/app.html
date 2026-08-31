@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AIQMX</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+    <style>
+      .app-body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        padding: 2.5rem 3rem;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        border-bottom: 1px solid #0a0a0a;
+        padding-bottom: 1rem;
+      }
+      header p {
+        margin: 0;
+        letter-spacing: 0.28em;
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+      a {
+        color: #0a0a0a;
+        font-size: 0.85rem;
+      }
+      .app-body h1 {
+        margin: 3rem 0 0.75rem;
+        font-size: 2rem;
+        font-weight: 500;
+        letter-spacing: -0.03em;
+      }
+      .app-body p {
+        margin: 0;
+        max-width: 28rem;
+        line-height: 1.5;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-body">
+      <header>
+        <p>AIQMX</p>
+        <a href="/" id="sign-out">Sign out</a>
+      </header>
+      <h1>You are signed in.</h1>
+      <p id="welcome">Authorized session.</p>
+    </div>
+    <script>
+      const token = sessionStorage.getItem("aiqmx_token");
+      const email = sessionStorage.getItem("aiqmx_email");
+      if (!token) {
+        window.location.replace("/");
+      } else {
+        document.getElementById("welcome").textContent =
+          "Signed in as " + email + ".";
+      }
+      document.getElementById("sign-out").addEventListener("click", (e) => {
+        e.preventDefault();
+        sessionStorage.clear();
+        window.location.href = "/";
+      });
+    </script>
+  </body>
+</html>

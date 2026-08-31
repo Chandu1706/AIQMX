@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AIQMX — Sign in</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="panel">
+        <p class="mark">AIQMX</p>
+        <h1>Sign in to continue.</h1>
+        <p class="lede">
+          Authorized users only. Homeowners, professionals, and agents use this
+          same door.
+        </p>
+      </aside>
+
+      <main class="form-side">
+        <form id="login-form" novalidate>
+          <p class="kicker">Account</p>
+          <h2>Log in</h2>
+
+          <label for="email">Email</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            autocomplete="username"
+            required
+            placeholder="you@company.com"
+          />
+
+          <label for="password">Password</label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            required
+            placeholder="••••••••"
+          />
+
+          <p id="form-error" class="error" hidden></p>
+
+          <button type="submit" id="submit-btn">Sign in</button>
+          <p class="hint">Demo: admin@aiqmx.local / admin123</p>
+        </form>
+      </main>
+    </div>
+    <script src="/js/login.js"></script>
+  </body>
+</html>
