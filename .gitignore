@@ -5,3 +5,7 @@ __pycache__/
 .DS_Store
 *.egg-info/
 .pytest_cache/
+node_modules/
+dist/
+frontend/.vite/
+*.log

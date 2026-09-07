@@ -1,7 +1,6 @@
 :root {
-  --black: #0a0a0a;
-  --white: #fafafa;
-  --line: #0a0a0a;
+  --black: #111;
+  --white: #fff;
 }
 
 *,
@@ -11,7 +10,8 @@
 }
 
 html,
-body {
+body,
+#root {
   margin: 0;
   min-height: 100%;
 }
@@ -57,7 +57,6 @@ body {
   max-width: 22rem;
   font-size: 0.95rem;
   line-height: 1.5;
-  color: var(--white);
   opacity: 0.85;
 }
 
@@ -81,7 +80,7 @@ form {
   text-transform: uppercase;
 }
 
-h2 {
+.form-side h2 {
   margin: 0 0 2rem;
   font-size: 1.75rem;
   font-weight: 500;
@@ -95,7 +94,8 @@ label {
   letter-spacing: 0.04em;
 }
 
-input {
+input,
+select {
   width: 100%;
   margin-bottom: 1.25rem;
   padding: 0.7rem 0;
@@ -108,17 +108,13 @@ input {
   border-radius: 0;
 }
 
-input::placeholder {
-  color: #0a0a0a;
-  opacity: 0.35;
-}
-
-input:focus {
+input:focus,
+select:focus {
   outline: none;
   border-bottom-width: 2px;
 }
 
-button {
+form button {
   width: 100%;
   margin-top: 0.5rem;
   padding: 0.9rem 1rem;
@@ -132,15 +128,13 @@ button {
   cursor: pointer;
 }
 
-button:hover,
-button:focus {
+form button:hover {
   background: var(--white);
   color: var(--black);
 }
 
-button:disabled {
+form button:disabled {
   opacity: 0.45;
-  cursor: not-allowed;
 }
 
 .error {
@@ -153,7 +147,46 @@ button:disabled {
 .hint {
   margin: 1.1rem 0 0;
   font-size: 0.75rem;
-  letter-spacing: 0.02em;
+}
+
+.login-back {
+  display: inline-block;
+  margin-bottom: 1.4rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--black);
+  text-decoration: none;
+}
+
+.app-body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 2.5rem 3rem;
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 1px solid var(--black);
+  padding-bottom: 1rem;
+}
+
+.app-header p {
+  margin: 0;
+  letter-spacing: 0.28em;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.app-header button {
+  border: none;
+  background: none;
+  font-size: 0.85rem;
+  cursor: pointer;
+  font-family: inherit;
 }
 
 @media (max-width: 800px) {
@@ -161,16 +194,8 @@ button:disabled {
     grid-template-columns: 1fr;
   }
 
-  .panel {
-    min-height: 34vh;
-    padding: 2rem 1.5rem 2.25rem;
-    justify-content: space-between;
-  }
-
   .form-side {
     border-left: none;
     border-top: 1px solid var(--black);
-    align-items: flex-start;
-    padding-top: 2.5rem;
   }
 }
