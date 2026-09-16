@@ -66,6 +66,9 @@ export function LoginPage() {
             Log in
           </button>
           <p className="hint">Demo: admin@aiqmx.local / admin123</p>
+          <p className="signup-link">
+            New here? <Link to="/signup">Create account</Link>
+          </p>
         </form>
       </main>
     </div>
