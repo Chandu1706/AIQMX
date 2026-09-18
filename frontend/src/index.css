@@ -286,3 +286,208 @@ form button:disabled {
     border-top: 1px solid var(--black);
   }
 }
+
+
+/* Homeowner registration form */
+.homeowner-shell {
+  height: 100vh;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* Left black panel stays fixed */
+.homeowner-shell .panel {
+  height: 100vh;
+  min-height: 0;
+  position: sticky;
+  top: 0;
+  overflow: hidden;
+}
+
+/* Right side scrolls independently */
+.homeowner-form-side {
+  height: 100vh;
+  min-height: 0;
+  align-items: flex-start;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  padding: 2.5rem 3rem;
+}
+
+/* Main form width and spacing */
+.homeowner-form {
+  width: 100%;
+  max-width: 46rem;
+  padding: 0 0 3rem;
+}
+
+/* Back link */
+.homeowner-form .login-back {
+  margin-bottom: 1.2rem;
+}
+
+/* HOMEOWNER */
+.homeowner-form .kicker {
+  margin-bottom: 0.35rem;
+}
+
+/* Create your account */
+.homeowner-form h2 {
+  margin: 0 0 0.9rem;
+  font-size: 1.75rem;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+
+/* Description */
+.homeowner-form .form-intro {
+  margin: 0 0 1.6rem;
+  color: #555;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+/* Sections */
+.form-section {
+  margin: 0 0 2.4rem;
+  padding: 0;
+}
+
+/* Section title */
+.section-heading {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 1.25rem;
+}
+
+.section-heading > span {
+  flex: 0 0 auto;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  padding-top: 0.2rem;
+}
+
+.section-heading h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.section-heading p {
+  margin: 0.2rem 0 0;
+  color: #666;
+  font-size: 0.75rem;
+}
+
+/* Two-column fields */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+}
+
+.form-grid > div {
+  min-width: 0;
+}
+
+/* Input fields */
+.homeowner-form input,
+.homeowner-form select,
+.homeowner-form textarea {
+  width: 100%;
+  margin-bottom: 1.1rem;
+  padding: 0.65rem 0;
+  border: none;
+  border-bottom: 1px solid #111;
+  background: transparent;
+  color: #111;
+  font: inherit;
+  font-size: 1rem;
+  border-radius: 0;
+}
+
+/* Textarea */
+.homeowner-form textarea {
+  resize: vertical;
+}
+
+/* Input focus */
+.homeowner-form input:focus,
+.homeowner-form select:focus,
+.homeowner-form textarea:focus {
+  outline: none;
+  border-bottom-width: 2px;
+}
+
+/* Checkbox */
+.homeowner-form input[type="checkbox"] {
+  width: auto;
+  margin: 0.15rem 0 0;
+  accent-color: #111;
+}
+
+/* Consent */
+.consent-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  margin: 0.4rem 0 0;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+.consent-row span {
+  max-width: 42rem;
+}
+
+/* Submit button */
+.homeowner-form button {
+  margin-top: 0.4rem;
+}
+
+/* Success */
+.success-wrap {
+  width: 100%;
+  max-width: 34rem;
+  padding: 2rem 0;
+}
+
+/* Mobile */
+@media (max-width: 800px) {
+  .homeowner-shell {
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+  }
+
+  .homeowner-shell .panel {
+    height: auto;
+    min-height: 55vh;
+    position: static;
+    overflow: visible;
+  }
+
+  .homeowner-form-side {
+    height: auto;
+    min-height: 45vh;
+    overflow: visible;
+    padding: 2rem 1.5rem;
+  }
+
+  .homeowner-form {
+    max-width: 100%;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .homeowner-form .form-section {
+    margin-bottom: 2rem;
+  }
+}
