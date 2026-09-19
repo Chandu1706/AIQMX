@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 from google.cloud.firestore_v1 import SERVER_TIMESTAMP
@@ -26,7 +26,7 @@ def upsert_user_profile(
         for key, value in (profile or {}).items()
         if value is not None and str(value).strip() != ""
     }
-    now = datetime.now(timezone.utc).isoformat()
+    now = datetime.now(UTC).isoformat()
     payload: dict[str, Any] = {
         "uid": uid,
         "email": email,

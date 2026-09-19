@@ -22,6 +22,17 @@ class SessionRequest(BaseModel):
     id_token: str = Field(min_length=20)
 
 
+class GoogleLoginRequest(BaseModel):
+    id_token: str = Field(min_length=20)
+
+
+class GoogleSignupRequest(BaseModel):
+    id_token: str = Field(min_length=20)
+    role: Role
+    display_name: str | None = None
+    profile: dict[str, Any] | None = None
+
+
 class AuthResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"

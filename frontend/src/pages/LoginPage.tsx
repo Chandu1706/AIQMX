@@ -1,6 +1,8 @@
 import { useState, type FormEvent } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import { getToken, login, setSession } from "../auth";
+import { getToken, GoogleSignupRequiredError, login, loginWithGoogle, setSession } from "../auth";
+import { GoogleButton } from "../components/GoogleButton";
+import { googleAuthErrorMessage } from "../googleAuth";
 
 export function LoginPage() {
   const navigate = useNavigate();
@@ -13,19 +15,38 @@ export function LoginPage() {
     return <Navigate to="/" replace />;
   }
 
-  async function onSubmit(event: FormEvent) {
-    event.preventDefault();
+  async function finishAuth(action: () => Promise<void>) {
     setError("");
     setBusy(true);
     try {
-      const result = await login(email.trim(), password);
-      setSession(result);
+      await action();
       navigate("/");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not sign in");
+      if (err instanceof GoogleSignupRequiredError) {
+        navigate("/signup?google=1");
+        return;
+      }
+      const googleMessage = googleAuthErrorMessage(err);
+      if (googleMessage === null) return;
+      setError(googleMessage);
     } finally {
       setBusy(false);
     }
+  }
+
+  async function onSubmit(event: FormEvent) {
+    event.preventDefault();
+    await finishAuth(async () => {
+      const result = await login(email.trim(), password);
+      setSession(result);
+    });
+  }
+
+  async function onGoogle() {
+    await finishAuth(async () => {
+      const result = await loginWithGoogle();
+      setSession(result);
+    });
   }
 
   return (
@@ -34,8 +55,7 @@ export function LoginPage() {
         <p className="mark">AIQMX</p>
         <h1>Sign in to continue.</h1>
         <p className="lede">
-          Authorized users only. Homeowners, tenants, professionals, and agents
-          use this same door.
+          Authorized users only. Homeowners, tenants, professionals, and agents use this same door.
         </p>
       </aside>
       <main className="form-side">
@@ -69,6 +89,8 @@ export function LoginPage() {
           <button type="submit" disabled={busy}>
             {busy ? "Signing in…" : "Log in"}
           </button>
+          <p className="auth-divider">or</p>
+          <GoogleButton busy={busy} label="Continue with Google" onClick={() => void onGoogle()} />
           <p className="signup-link">
             New here? <Link to="/signup">Create account</Link>
           </p>

@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     firebase_project_id: str = "aiqmx-realtor"
     # Web API key from Firebase Console → Project settings → General
     firebase_web_api_key: str = ""
+    firebase_auth_domain: str = ""
     firebase_credentials_path: str = str(DEFAULT_SA_PATH)
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")

@@ -3,6 +3,8 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from app.deps import get_current_user
 from app.schemas.auth import (
     AuthResponse,
+    GoogleLoginRequest,
+    GoogleSignupRequest,
     LoginRequest,
     MeResponse,
     SessionRequest,
@@ -33,11 +35,32 @@ async def signup(body: SignupRequest) -> AuthResponse:
     return AuthResponse(**session)
 
 
+@router.get("/config")
+def firebase_web_config() -> dict[str, str]:
+    return firebase_auth.firebase_web_config()
+
+
+@router.post("/google/login", response_model=AuthResponse)
+def google_login(body: GoogleLoginRequest) -> AuthResponse:
+    return AuthResponse(**firebase_auth.sign_in_with_google(body.id_token))
+
+
+@router.post("/google/signup", response_model=AuthResponse)
+def google_signup(body: GoogleSignupRequest) -> AuthResponse:
+    session = firebase_auth.sign_up_with_google(
+        body.id_token,
+        role=body.role,
+        display_name=body.display_name.strip() if body.display_name else None,
+        profile=body.profile,
+    )
+    return AuthResponse(**session)
+
+
 @router.post("/session", response_model=AuthResponse)
 def establish_session(body: SessionRequest) -> AuthResponse:
     try:
         session = firebase_auth.session_from_id_token(body.id_token)
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid or expired Firebase token",
@@ -56,9 +79,7 @@ def me(user: dict = Depends(get_current_user)) -> MeResponse:
     if doc:
         role = doc.get("role") if isinstance(doc.get("role"), str) else None
         status = doc.get("status") if isinstance(doc.get("status"), str) else None
-        display_name = (
-            doc.get("display_name") if isinstance(doc.get("display_name"), str) else None
-        )
+        display_name = doc.get("display_name") if isinstance(doc.get("display_name"), str) else None
         raw_profile = doc.get("profile")
         profile = raw_profile if isinstance(raw_profile, dict) else {}
 
@@ -66,8 +87,7 @@ def me(user: dict = Depends(get_current_user)) -> MeResponse:
         uid=uid,
         email=user.get("email") or (doc or {}).get("email"),
         role=role or (user.get("role") if isinstance(user.get("role"), str) else None),
-        status=status
-        or (user.get("status") if isinstance(user.get("status"), str) else None),
+        status=status or (user.get("status") if isinstance(user.get("status"), str) else None),
         display_name=display_name,
         profile=profile,
         claims={

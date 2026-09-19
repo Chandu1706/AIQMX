@@ -18,7 +18,7 @@ def get_current_user(
         )
     try:
         return verify_id_token(credentials.credentials)
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid or expired Firebase token",

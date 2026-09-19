@@ -1,6 +1,8 @@
 import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { setSession, signup } from "../auth";
+import { setSession, signup, signupWithGoogle } from "../auth";
+import { GoogleButton } from "../components/GoogleButton";
+import { googleAuthErrorMessage } from "../googleAuth";
 
 export function RegisterHomeownerPage() {
   const navigate = useNavigate();
@@ -11,15 +13,28 @@ export function RegisterHomeownerPage() {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
+  async function finish(action: () => Promise<void>) {
+    setError("");
+    setBusy(true);
+    try {
+      await action();
+      navigate("/");
+    } catch (err) {
+      const googleMessage = googleAuthErrorMessage(err);
+      if (googleMessage === null) return;
+      setError(googleMessage);
+    } finally {
+      setBusy(false);
+    }
+  }
+
   async function onSubmit(event: FormEvent) {
     event.preventDefault();
     if (!name.trim() || !email.trim() || !phone.trim() || !password.trim()) {
       setError("Please fill in all fields, including password, before submitting.");
       return;
     }
-    setError("");
-    setBusy(true);
-    try {
+    await finish(async () => {
       const session = await signup({
         email: email.trim(),
         password,
@@ -28,12 +43,18 @@ export function RegisterHomeownerPage() {
         profile: { phone: phone.trim() },
       });
       setSession(session);
-      navigate("/");
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not create account");
-    } finally {
-      setBusy(false);
-    }
+    });
+  }
+
+  async function onGoogle() {
+    await finish(async () => {
+      const session = await signupWithGoogle({
+        role: "homeowner",
+        display_name: name.trim() || undefined,
+        profile: { phone: phone.trim() },
+      });
+      setSession(session);
+    });
   }
 
   return (
@@ -41,10 +62,7 @@ export function RegisterHomeownerPage() {
       <aside className="panel">
         <p className="mark">AIQMX</p>
         <h1>Homeowner account.</h1>
-        <p className="lede">
-          Track your property, request work, and keep everything in one
-          place.
-        </p>
+        <p className="lede">Track your property, request work, and keep everything in one place.</p>
       </aside>
       <main className="form-side">
         <form onSubmit={onSubmit} noValidate>
@@ -53,6 +71,11 @@ export function RegisterHomeownerPage() {
           </Link>
           <p className="kicker">Homeowner</p>
           <h2>Create account</h2>
+          <GoogleButton busy={busy} label="Sign up with Google" onClick={() => void onGoogle()} />
+          <p className="hint">
+            Google fills in your name and email. Other fields below are optional.
+          </p>
+          <p className="auth-divider">or</p>
           <label htmlFor="name">Full name</label>
           <input
             id="name"

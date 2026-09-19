@@ -16,6 +16,7 @@ AIQMX/
 - Node.js 20+
 - Firebase project with:
   - Email/Password sign-in enabled
+  - **Google** sign-in enabled
   - Cloud Firestore enabled
   - Admin service account JSON
   - Web API Key
@@ -50,8 +51,8 @@ Run:
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-- API: http://127.0.0.1:8000  
-- Docs: http://127.0.0.1:8000/docs  
+- API: http://127.0.0.1:8000
+- Docs: http://127.0.0.1:8000/docs
 
 More detail: [backend/README.md](backend/README.md)
 
@@ -63,27 +64,29 @@ npm install
 npm run dev
 ```
 
-App: http://localhost:5173  
+App: http://localhost:5173
 
 More detail: [frontend/README.md](frontend/README.md)
 
 ## How auth works
 
 1. User picks an account type on signup: **homeowner**, **tenant**, **professional**, or **agent**
-2. Frontend `POST /auth/signup` (or `/auth/login`) via the Vite proxy
-3. Backend creates/signs in the user with Firebase
-4. Backend sets Auth custom claims: `role`, `status` (`pending_approval`)
-5. Backend writes a Firestore doc at `users/{uid}` with email, role, account type, display name, and profile fields
-6. Frontend stores the Firebase ID token in `sessionStorage` and redirects to the home page (`/`)
+2. They either submit email/password, or click **Continue with Google** / **Sign up with Google**
+3. Google sign-in uses the Firebase web SDK (popup). The frontend then `POST`s the Google ID token to `/auth/google/login` or `/auth/google/signup`
+4. Email/password still goes to `/auth/login` and `/auth/signup`
+5. Backend verifies the Firebase ID token, sets Auth custom claims (`role`, `status`), and writes `users/{uid}` in Firestore
+6. Frontend stores the Firebase ID token in `sessionStorage` and redirects to `/`
+
+Google login requires an existing AIQMX profile. New Google users must complete a registration form (role + profile fields) first.
 
 ## Account types stored in Firestore
 
-| `role` / `account_type` | Registration path |
-| --- | --- |
-| `homeowner` | `/register/homeowner` |
-| `tenant` | `/register/tenant` |
-| `professional` | `/register/professional` |
-| `agent` | `/register/agent` |
+| `role` / `account_type` | Registration path        |
+| ----------------------- | ------------------------ |
+| `homeowner`             | `/register/homeowner`    |
+| `tenant`                | `/register/tenant`       |
+| `professional`          | `/register/professional` |
+| `agent`                 | `/register/agent`        |
 
 Example document shape:
 
@@ -97,6 +100,40 @@ Example document shape:
   "display_name": "Jane Doe",
   "profile": { "phone": "555-0100" }
 }
+```
+
+## Layout (enforced in CI)
+
+Keep new work inside this tree. The structure check fails the PR if extra top-level folders, secrets, or generated artifacts are committed.
+
+```
+AIQMX/
+  backend/     FastAPI app + pytest
+  frontend/    React + Vite app + Vitest
+  scripts/     CI helpers
+  .github/     workflows and PR template
+```
+
+## Checks
+
+GitHub Actions runs lint, unit tests, the production frontend build, and a repository-structure check on every push and pull request.
+
+```bash
+python3 scripts/check_repo_structure.py
+
+# backend
+cd backend
+pip install -r requirements-dev.txt
+ruff check .
+ruff format --check .
+pytest
+
+# frontend
+cd frontend
+npm run lint
+npm run format:check
+npm test
+npm run build
 ```
 
 ## Notes

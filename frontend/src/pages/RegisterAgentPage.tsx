@@ -1,6 +1,8 @@
 import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { setSession, signup } from "../auth";
+import { setSession, signup, signupWithGoogle } from "../auth";
+import { GoogleButton } from "../components/GoogleButton";
+import { googleAuthErrorMessage } from "../googleAuth";
 
 type AgentSide = "buyer" | "seller";
 
@@ -16,6 +18,21 @@ export function RegisterAgentPage() {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
+  async function finish(action: () => Promise<void>) {
+    setError("");
+    setBusy(true);
+    try {
+      await action();
+      navigate("/");
+    } catch (err) {
+      const googleMessage = googleAuthErrorMessage(err);
+      if (googleMessage === null) return;
+      setError(googleMessage);
+    } finally {
+      setBusy(false);
+    }
+  }
+
   async function onSubmit(event: FormEvent) {
     event.preventDefault();
     if (
@@ -29,9 +46,7 @@ export function RegisterAgentPage() {
       setError("Please fill in all fields, including password, before submitting.");
       return;
     }
-    setError("");
-    setBusy(true);
-    try {
+    await finish(async () => {
       const session = await signup({
         email: email.trim(),
         password,
@@ -45,12 +60,23 @@ export function RegisterAgentPage() {
         },
       });
       setSession(session);
-      navigate("/");
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not create account");
-    } finally {
-      setBusy(false);
-    }
+    });
+  }
+
+  async function onGoogle() {
+    await finish(async () => {
+      const session = await signupWithGoogle({
+        role: "agent",
+        display_name: name.trim() || undefined,
+        profile: {
+          side,
+          brokerage: brokerage.trim(),
+          license: license.trim(),
+          markets: markets.trim(),
+        },
+      });
+      setSession(session);
+    });
   }
 
   return (
@@ -59,8 +85,7 @@ export function RegisterAgentPage() {
         <p className="mark">AIQMX</p>
         <h1>Agent account.</h1>
         <p className="lede">
-          Represent buyers or sellers and reach homeowners across your
-          markets.
+          Represent buyers or sellers and reach homeowners across your markets.
         </p>
       </aside>
       <main className="form-side">
@@ -70,6 +95,11 @@ export function RegisterAgentPage() {
           </Link>
           <p className="kicker">Agent</p>
           <h2>Create account</h2>
+          <GoogleButton busy={busy} label="Sign up with Google" onClick={() => void onGoogle()} />
+          <p className="hint">
+            Google fills in your name and email. Other fields below are optional.
+          </p>
+          <p className="auth-divider">or</p>
           <label htmlFor="side">I represent</label>
           <div className="toggle-group" id="side" role="group" aria-label="I represent">
             <button
