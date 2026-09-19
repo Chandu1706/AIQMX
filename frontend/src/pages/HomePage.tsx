@@ -1,10 +1,31 @@
+import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import { clearSession, getEmail, getToken } from "../auth";
+import { fetchMe, getEmail, getRole, getToken, logout } from "../auth";
 
 export function HomePage() {
   const navigate = useNavigate();
   const token = getToken();
   const email = getEmail();
+  const role = getRole();
+  const [status, setStatus] = useState<string | null>(null);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (!token) return;
+    let cancelled = false;
+    fetchMe()
+      .then((me) => {
+        if (!cancelled) setStatus(me.status ?? null);
+      })
+      .catch((err) => {
+        if (!cancelled) {
+          setError(err instanceof Error ? err.message : "Session expired");
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [token]);
 
   if (!token) {
     return <Navigate to="/login" replace />;
@@ -16,8 +37,8 @@ export function HomePage() {
         <p>AIQMX</p>
         <button
           type="button"
-          onClick={() => {
-            clearSession();
+          onClick={async () => {
+            await logout();
             navigate("/");
           }}
         >
@@ -26,6 +47,9 @@ export function HomePage() {
       </header>
       <h1>You are signed in.</h1>
       <p>Signed in as {email}.</p>
+      {role ? <p>Role: {role}</p> : null}
+      {status ? <p>Status: {status}</p> : null}
+      {error ? <p className="error">{error}</p> : null}
     </div>
   );
 }

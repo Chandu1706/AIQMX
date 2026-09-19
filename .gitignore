@@ -2,6 +2,7 @@
 __pycache__/
 *.py[cod]
 .env
+.env.local
 .DS_Store
 *.egg-info/
 .pytest_cache/
@@ -9,3 +10,6 @@ node_modules/
 dist/
 frontend/.vite/
 *.log
+backend/secrets/
+**/firebase-service-account*.json
+*-firebase-adminsdk-*.json

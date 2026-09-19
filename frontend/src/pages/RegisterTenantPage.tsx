@@ -2,27 +2,18 @@ import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { setSession, signup } from "../auth";
 
-export function RegisterProfessionalPage() {
+export function RegisterTenantPage() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [trade, setTrade] = useState("");
-  const [company, setCompany] = useState("");
-  const [license, setLicense] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
   async function onSubmit(event: FormEvent) {
     event.preventDefault();
-    if (
-      !name.trim() ||
-      !email.trim() ||
-      !trade.trim() ||
-      !company.trim() ||
-      !license.trim() ||
-      !password.trim()
-    ) {
+    if (!name.trim() || !email.trim() || !phone.trim() || !password.trim()) {
       setError("Please fill in all fields, including password, before submitting.");
       return;
     }
@@ -32,13 +23,9 @@ export function RegisterProfessionalPage() {
       const session = await signup({
         email: email.trim(),
         password,
-        role: "professional",
+        role: "tenant",
         display_name: name.trim(),
-        profile: {
-          trade: trade.trim(),
-          company: company.trim(),
-          license: license.trim(),
-        },
+        profile: { phone: phone.trim() },
       });
       setSession(session);
       navigate("/");
@@ -53,9 +40,10 @@ export function RegisterProfessionalPage() {
     <div className="shell">
       <aside className="panel">
         <p className="mark">AIQMX</p>
-        <h1>Professional account.</h1>
+        <h1>Tenant account.</h1>
         <p className="lede">
-          List your trade, get matched with homeowners, and manage your jobs.
+          Find rentals, message landlords, and keep your lease details in one
+          place.
         </p>
       </aside>
       <main className="form-side">
@@ -63,7 +51,7 @@ export function RegisterProfessionalPage() {
           <Link className="login-back" to="/signup">
             ← AIQMX
           </Link>
-          <p className="kicker">Professional</p>
+          <p className="kicker">Tenant</p>
           <h2>Create account</h2>
           <label htmlFor="name">Full name</label>
           <input
@@ -85,34 +73,15 @@ export function RegisterProfessionalPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          <label htmlFor="trade">Trade</label>
+          <label htmlFor="phone">Phone</label>
           <input
-            id="trade"
-            name="trade"
-            type="text"
-            placeholder="Electrician, plumber, HVAC..."
+            id="phone"
+            name="phone"
+            type="tel"
+            autoComplete="tel"
             required
-            value={trade}
-            onChange={(e) => setTrade(e.target.value)}
-          />
-          <label htmlFor="company">Company</label>
-          <input
-            id="company"
-            name="company"
-            type="text"
-            autoComplete="organization"
-            required
-            value={company}
-            onChange={(e) => setCompany(e.target.value)}
-          />
-          <label htmlFor="license">License number</label>
-          <input
-            id="license"
-            name="license"
-            type="text"
-            required
-            value={license}
-            onChange={(e) => setLicense(e.target.value)}
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
           />
           <label htmlFor="password">Password</label>
           <input

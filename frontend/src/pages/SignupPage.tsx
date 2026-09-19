@@ -1,6 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
+import { getToken } from "../auth";
 
 export function SignupPage() {
+  if (getToken()) {
+    return <Navigate to="/" replace />;
+  }
+
   return (
     <div className="shell">
       <aside className="panel">
@@ -23,6 +28,12 @@ export function SignupPage() {
               <span className="role-name">Homeowner</span>
               <span className="role-desc">
                 Manage your property and connect with pros.
+              </span>
+            </Link>
+            <Link className="role-card" to="/register/tenant">
+              <span className="role-name">Tenant</span>
+              <span className="role-desc">
+                Search rentals and manage your lease in one place.
               </span>
             </Link>
             <Link className="role-card" to="/register/professional">

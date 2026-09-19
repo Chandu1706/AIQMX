@@ -65,6 +65,18 @@
 .lp-btn-login {
   background: #fff;
   color: #111;
+  cursor: pointer;
+  font: inherit;
+  text-decoration: none;
+}
+
+.lp-user {
+  max-width: 12rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.75rem;
+  color: #444;
 }
 
 .landing a.lp-btn-signup,

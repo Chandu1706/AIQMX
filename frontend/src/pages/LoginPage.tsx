@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { login, setSession } from "../auth";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { getToken, login, setSession } from "../auth";
 
 export function LoginPage() {
   const navigate = useNavigate();
@@ -9,14 +9,18 @@ export function LoginPage() {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
+  if (getToken()) {
+    return <Navigate to="/" replace />;
+  }
+
   async function onSubmit(event: FormEvent) {
     event.preventDefault();
     setError("");
     setBusy(true);
     try {
       const result = await login(email.trim(), password);
-      setSession(result.access_token, result.email);
-      navigate("/app");
+      setSession(result);
+      navigate("/");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not sign in");
     } finally {
@@ -30,8 +34,8 @@ export function LoginPage() {
         <p className="mark">AIQMX</p>
         <h1>Sign in to continue.</h1>
         <p className="lede">
-          Authorized users only. Homeowners, professionals, and agents use this
-          same door.
+          Authorized users only. Homeowners, tenants, professionals, and agents
+          use this same door.
         </p>
       </aside>
       <main className="form-side">
@@ -63,9 +67,8 @@ export function LoginPage() {
           />
           {error ? <p className="error">{error}</p> : null}
           <button type="submit" disabled={busy}>
-            Log in
+            {busy ? "Signing in…" : "Log in"}
           </button>
-          <p className="hint">Demo: admin@aiqmx.local / admin123</p>
           <p className="signup-link">
             New here? <Link to="/signup">Create account</Link>
           </p>
