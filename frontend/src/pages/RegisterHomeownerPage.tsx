@@ -94,9 +94,10 @@ export function RegisterHomeownerPage() {
               Complete the application below. Fields marked with * are
               required.
             </p>
+
             <section className="form-section">
               <div className="section-heading">
-                <span>1</span>
+                <span>01</span>
                 <div>
                   <h3>Applicant details</h3>
                   <p>Your contact information</p>
@@ -157,7 +158,7 @@ export function RegisterHomeownerPage() {
 
             <section className="form-section">
               <div className="section-heading">
-                <span>2</span>
+                <span>02</span>
                 <div>
                   <h3>Property & residency</h3>
                   <p>Information about your home</p>
@@ -210,7 +211,7 @@ export function RegisterHomeownerPage() {
 
             <section className="form-section">
               <div className="section-heading">
-                <span>3</span>
+                <span>03</span>
                 <div>
                   <h3>Emergency contact</h3>
                   <p>Someone we can contact if needed</p>
@@ -243,7 +244,7 @@ export function RegisterHomeownerPage() {
 
             <section className="form-section">
               <div className="section-heading">
-                <span>4</span>
+                <span>04</span>
                 <div>
                   <h3>Household & vehicles</h3>
                   <p>Optional community details</p>
@@ -287,7 +288,7 @@ export function RegisterHomeownerPage() {
 
             <section className="form-section">
               <div className="section-heading">
-                <span>5</span>
+                <span>05</span>
                 <div>
                   <h3>Account security</h3>
                   <p>Protect your AIQMX account</p>
@@ -315,7 +316,7 @@ export function RegisterHomeownerPage() {
 
             {error ? <p className="error">{error}</p> : null}
 
-            <button type="submit">Submit</button>
+            <button type="submit">Submit homeowner application</button>
 
             <p className="signup-link">
               Already have an account? <Link to="/login">Log in</Link>
@@ -324,5 +325,5 @@ export function RegisterHomeownerPage() {
         )}
       </main>
     </div>
-  )
+  );
 }

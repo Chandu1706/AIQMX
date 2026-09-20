@@ -52,10 +52,7 @@ export function SiteFooter() {
           <Link className="lp-logo" to="/">
             AIQMX
           </Link>
-          <p>
-            The all in one real estate platform for listings, agents, and
-            property work.
-          </p>
+          <p>The all in one real estate platform for listings, agents, and property work.</p>
         </div>
         <div>
           <h2>Quick links</h2>

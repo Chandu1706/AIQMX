@@ -137,6 +137,52 @@ form button:disabled {
   opacity: 0.45;
 }
 
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1.15rem 0 0.85rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--black);
+  opacity: 0.55;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--black);
+  opacity: 0.3;
+}
+
+form button.google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  margin-top: 0;
+  margin-bottom: 0.35rem;
+  background: var(--white);
+  color: var(--black);
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-size: 0.95rem;
+}
+
+form button.google-btn:hover {
+  background: var(--black);
+  color: var(--white);
+}
+
+.google-btn-icon {
+  width: 1.1rem;
+  height: 1.1rem;
+  flex-shrink: 0;
+}
+
 .error {
   margin: 0 0 1rem;
   font-size: 0.85rem;
@@ -145,8 +191,10 @@ form button:disabled {
 }
 
 .hint {
-  margin: 1.1rem 0 0;
+  margin: 0 0 1rem;
   font-size: 0.75rem;
+  line-height: 1.45;
+  opacity: 0.7;
 }
 
 .login-back {
@@ -184,7 +232,9 @@ form button:disabled {
   padding: 1.1rem 1.25rem;
   text-decoration: none;
   color: var(--black);
-  transition: background 0.15s ease, color 0.15s ease;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
 }
 
 .role-card:hover {

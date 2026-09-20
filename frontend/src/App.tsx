@@ -7,6 +7,7 @@ import { SignupPage } from "./pages/SignupPage";
 import { RegisterHomeownerPage } from "./pages/RegisterHomeownerPage";
 import { RegisterProfessionalPage } from "./pages/RegisterProfessionalPage";
 import { RegisterAgentPage } from "./pages/RegisterAgentPage";
+import { RegisterTenantPage } from "./pages/RegisterTenantPage";
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/register/homeowner" element={<RegisterHomeownerPage />} />
+        <Route path="/register/tenant" element={<RegisterTenantPage />} />
         <Route path="/register/professional" element={<RegisterProfessionalPage />} />
         <Route path="/register/agent" element={<RegisterAgentPage />} />
         <Route path="/listings" element={<PlaceholderPage />} />

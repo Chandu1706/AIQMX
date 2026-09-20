@@ -65,6 +65,18 @@
 .lp-btn-login {
   background: #fff;
   color: #111;
+  cursor: pointer;
+  font: inherit;
+  text-decoration: none;
+}
+
+.lp-user {
+  max-width: 12rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.75rem;
+  color: #444;
 }
 
 .landing a.lp-btn-signup,
@@ -85,9 +97,8 @@
   content: "";
   position: absolute;
   inset: 0;
-  background:
-    url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=80")
-      center / cover no-repeat;
+  background: url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=80")
+    center / cover no-repeat;
   filter: grayscale(1);
 }
 
