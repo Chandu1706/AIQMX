@@ -324,5 +324,5 @@ export function RegisterHomeownerPage() {
         )}
       </main>
     </div>
-  );
+  )
 }
