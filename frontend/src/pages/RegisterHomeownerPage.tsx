@@ -316,7 +316,7 @@ export function RegisterHomeownerPage() {
 
             {error ? <p className="error">{error}</p> : null}
 
-            <button type="submit">Submit homeowner application</button>
+            <button type="submit">Submit</button>
 
             <p className="signup-link">
               Already have an account? <Link to="/login">Log in</Link>
